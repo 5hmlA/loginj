@@ -1,13 +1,2 @@
-
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-
-class Loginj {
-  static const MethodChannel _channel = MethodChannel('loginj');
-
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-}
+export 'src/fb_switch.dart';
+export 'src/stone.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-class Unchanging extends StatelessWidget {
+class Stone extends StatelessWidget {
   final Widget child;
 
-  const Unchanging({Key? key, required this.child}) : super(key: key);
+  const Stone({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

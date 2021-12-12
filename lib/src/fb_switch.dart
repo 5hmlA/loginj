@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'unchanging_wrapper.dart';
+import '../loginj.dart';
+
 
 
 /// aniValue 0-1 后面到前面
@@ -248,7 +249,7 @@ class BackFrontSwitcherState extends State<BackFrontSwitcher> with SingleTickerP
       return temp;
     }
     Widget buildWidget = builder(context, aniValue);
-    if (buildWidget is Unchanging) {
+    if (buildWidget is Stone) {
       _cache[index] = buildWidget;
     }
     return buildWidget;
