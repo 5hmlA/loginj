@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _showLoading = false;
 
   toggle(BuildContext context) {
-    BackFrontSwitcher.of(context)?.toggle();
+    Switchej.of(context)?.toggle();
   }
 
   @override
@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
   Padding buildSwither() {
     return Padding(
       padding: EdgeInsets.all(padding),
-      child: BackFrontSwitcher(
+      child: Switchej(
         offset: 50,
         firstFront: (context, aniValue) {
           return Card(
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 20 * (1 - aniValue),
             child: InkWell(
               onTap: () {
-                BackFrontSwitcher.of(context)?.toggle();
+                Switchej.of(context)?.toggle();
               },
               child: SizedBox(
                 height: height,

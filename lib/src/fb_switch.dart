@@ -13,7 +13,7 @@ import '../loginj.dart';
 typedef AniBuilder = Widget Function(BuildContext context, double aniValue);
 
 @immutable
-class BackFrontSwitcher extends StatefulWidget {
+class Switchej extends StatefulWidget {
   final AniBuilder firstFront;
   final AniBuilder firstBack;
   final AniBuilder secondFront;
@@ -21,7 +21,7 @@ class BackFrontSwitcher extends StatefulWidget {
   final double offset;
   final Duration duration;
 
-  const BackFrontSwitcher({
+  const Switchej({
     Key? key,
     required this.firstFront,
     required this.firstBack,
@@ -31,11 +31,11 @@ class BackFrontSwitcher extends StatefulWidget {
     this.duration = const Duration(milliseconds: 600),
   }) : super(key: key);
 
-  static BackFrontSwitcherState? of(BuildContext context) {
-    BackFrontSwitcherState? state = context.findAncestorStateOfType<BackFrontSwitcherState>();
+  static SwitchejState? of(BuildContext context) {
+    SwitchejState? state = context.findAncestorStateOfType<SwitchejState>();
     if (state == null && context is StatefulElement) {
-      if (context.state is BackFrontSwitcherState) {
-        return context.state as BackFrontSwitcherState;
+      if (context.state is SwitchejState) {
+        return context.state as SwitchejState;
       }
       print("of > [context] === $context ");
     }
@@ -43,10 +43,10 @@ class BackFrontSwitcher extends StatefulWidget {
   }
 
   @override
-  BackFrontSwitcherState createState() => BackFrontSwitcherState();
+  SwitchejState createState() => SwitchejState();
 }
 
-class BackFrontSwitcherState extends State<BackFrontSwitcher> with SingleTickerProviderStateMixin {
+class SwitchejState extends State<Switchej> with SingleTickerProviderStateMixin {
   late AnimationController _animationControl;
   final _Z = 60;
   bool _firstShow = true;
