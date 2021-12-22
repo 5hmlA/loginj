@@ -2,7 +2,7 @@
 
 ### what is it
 
-https://raw.githubusercontent.com/ZuYun/loginj/main/preview/loginj.gif
+![flipover](https://raw.githubusercontent.com/ZuYun/loginj/main/preview/loginj.gif)
 
 
 
