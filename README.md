@@ -1,4 +1,4 @@
-# [![publish](https://github.com/ZuYun/loginj/actions/workflows/publish.yml/badge.svg)](https://github.com/ZuYun/loginj/actions/workflows/publish.yml)  ![https://pub.dev/packages/loginj](https://img.shields.io/badge/loginj-0.0.2-blue)  
+# [![publish](https://github.com/ZuYun/loginj/actions/workflows/publish.yml/badge.svg)](https://github.com/ZuYun/loginj/actions/workflows/publish.yml)  [![https://pub.dev/packages/loginj](https://img.shields.io/badge/loginj-0.0.2-blue)](https://pub.dev/packages/loginj)  
 
 ### what is it
 
