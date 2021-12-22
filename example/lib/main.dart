@@ -1,62 +1,24 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:loginj/loginj.dart';
-import 'package:loginj_example/widgets_factory.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'login_widgets.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class LoginCard extends StatelessWidget {
+  const LoginCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              child: Image.network(
-                "https://github.githubassets.com/images/modules/site/home/globe.jpg",
-                fit: BoxFit.cover,
-              ),
-            ),
-            SizedBox.expand(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Image.network(
-                  "https://github.githubassets.com/images/modules/site/home/astro-mona.webp",
-                  scale: 4.5,
-                ),
-                // child: Image.asset(
-                //   "images/astro_mona.webp",
-                //   fit: BoxFit.fill,
-                //   scale: 4,
-                // ),
-              ),
-            ),
-            LoginPage(),
-          ],
-        ),
-      ),
+    return FlipOverj(
+      firstFront: (context, aniValue) => firstFrontCard(context, aniValue),
+      firstBack: (context, aniValue) => firstBackCard(context, aniValue),
+      secondFront: (context, aniValue) => secondFrontCard(context, aniValue),
+      secondBack: (context, aniValue) => secondBackCard(context, aniValue),
     );
   }
+}
+void toggle(BuildContext context) {
+  FlipOverj.of(context)?.toggle();
 }

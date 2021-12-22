@@ -1,4 +1,4 @@
-package june.ospl.loginj_example
+package june.jzy.ospl.example
 
 import io.flutter.embedding.android.FlutterActivity
 

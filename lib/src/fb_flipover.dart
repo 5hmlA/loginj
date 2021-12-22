@@ -1,52 +1,50 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../loginj.dart';
-
-
 
 /// aniValue 0-1 后面到前面
 typedef AniBuilder = Widget Function(BuildContext context, double aniValue);
 
 @immutable
-class Switchej extends StatefulWidget {
+class FlipOverj extends StatefulWidget {
   final AniBuilder firstFront;
   final AniBuilder firstBack;
   final AniBuilder secondFront;
   final AniBuilder secondBack;
   final double offset;
+  final double secondScale;
+  final double firstScale;
   final Duration duration;
 
-  const Switchej({
+  const FlipOverj({
     Key? key,
     required this.firstFront,
     required this.firstBack,
     required this.secondFront,
     required this.secondBack,
-    this.offset = 150,
+    this.offset = 50,
+    this.secondScale = 0.85,
+    this.firstScale = 0.8,
     this.duration = const Duration(milliseconds: 600),
   }) : super(key: key);
 
-  static SwitchejState? of(BuildContext context) {
-    SwitchejState? state = context.findAncestorStateOfType<SwitchejState>();
+  static FlipOverjState? of(BuildContext context) {
+    FlipOverjState? state = context.findAncestorStateOfType<FlipOverjState>();
     if (state == null && context is StatefulElement) {
-      if (context.state is SwitchejState) {
-        return context.state as SwitchejState;
+      if (context.state is FlipOverjState) {
+        return context.state as FlipOverjState;
       }
-      print("of > [context] === $context ");
     }
     return state;
   }
 
   @override
-  SwitchejState createState() => SwitchejState();
+  FlipOverjState createState() => FlipOverjState();
 }
 
-class SwitchejState extends State<Switchej> with SingleTickerProviderStateMixin {
+class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixin {
   late AnimationController _animationControl;
   final _Z = 60;
   bool _firstShow = true;
@@ -114,7 +112,7 @@ class SwitchejState extends State<Switchej> with SingleTickerProviderStateMixin 
   }
 
   Widget _firstShowAnimation() {
-    Widget firstFrount = findWidget(widget.firstFront, context, 0, 1);
+    Widget firstFront = findWidget(widget.firstFront, context, 0, 1);
     Widget secBack = findWidget(widget.secondBack, context, 0, 4);
     return RepaintBoundary(
       child: AnimatedBuilder(
@@ -124,25 +122,21 @@ class SwitchejState extends State<Switchej> with SingleTickerProviderStateMixin 
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: widget.offset),
-                  child: Transform.translate(
-                    offset: Offset(0, -widget.offset * (.5) + offsetSlow()),
-                    child: Transform(
-                      transform: Matrix4.identity()
-                        ..setEntry(3, 2, 0.001)
-                        ..translate(.0, .0, _Z.toDouble()),
-                      alignment: Alignment.center,
-                      child: Transform.scale(
-                        scale: 0.85,
-                        child: secBack,
-                      ),
-                    ),
+                  child: Transform(
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..setEntry(1, 3, -widget.offset * (.5) + offsetSlow())
+                      ..setEntry(3, 3, 1 / widget.secondScale)
+                      ..translate(.0, .0, _Z.toDouble()),
+                    alignment: Alignment.center,
+                    child: secBack,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: widget.offset),
                   child: Transform.translate(
                     offset: Offset(0, widget.offset + offsetNormal()),
-                    child: firstFrount,
+                    child: firstFront,
                   ),
                 ),
               ],
@@ -161,74 +155,66 @@ class SwitchejState extends State<Switchej> with SingleTickerProviderStateMixin 
         (2.22 * Curves.ease.transformInternal(1 - _animationControl.value).clamp(0, 1));
   }
 
-  /// 后面的第二个 往前转 变为第一个
+  /// 后面的第二个 往前转 变为第一个  0 - 0.5
   Stack back2half(BuildContext context) {
     double aniFoldValue = easeOutAniValue(_animationControl.value);
+    var secondBackScale = (widget.secondScale + 2 * (1 - widget.secondScale) * aniFoldValue);
+    var firstFrontScale = (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
     return Stack(
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: widget.offset),
-          child: Transform.translate(
-            offset: Offset(0, -widget.offset * (aniFoldValue + .5)),
-            child: Transform(
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateX(pi * 1 * aniFoldValue)
-                ..translate(.0, 0, _Z * (1 - easeInAniValue(aniFoldValue))),
-              alignment: Alignment.center,
-              child: Transform.scale(
-                scale: 0.85 + 0.3 * aniFoldValue,
-                child: findWidget(widget.secondBack, context, aniFoldValue, 4),
-              ),
-            ),
+          child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001 * Curves.easeOutCirc.transform(-2 * aniFoldValue + 1))
+              ..setEntry(1, 3, -widget.offset * (aniFoldValue + .5))
+              ..rotateX(pi * 1 * aniFoldValue)
+              ..setEntry(3, 3, 1 / secondBackScale)
+              ..translate(.0, 0, _Z * (1 - easeInAniValue(aniFoldValue))),
+            alignment: Alignment.center,
+            child: findWidget(widget.secondBack, context, aniFoldValue, 4),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: widget.offset),
-          child: Transform.translate(
-            offset: Offset(0, widget.offset),
-            child: Transform.scale(
-              scale: 0.8 + 0.2 * (1 - aniFoldValue),
-              alignment: Alignment.bottomCenter,
-              child: findWidget(widget.firstFront, context, aniFoldValue, 1),
-            ),
+          child: Transform(
+            alignment: Alignment.bottomCenter,
+            transform: Matrix4.identity()
+              ..setEntry(3, 3, 1 / firstFrontScale)
+              ..setEntry(1, 3, widget.offset),
+            child: findWidget(widget.firstFront, context, aniFoldValue, 1),
           ),
         ),
       ],
     );
   }
 
+  /// 0.5 - 1
   Stack half2front(BuildContext context) {
     double aniFoldValue = easeOutAniValue(_animationControl.value);
+    var firstBackScale = (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
     return Stack(
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: widget.offset),
-          child: Transform.translate(
-            offset: Offset(0, widget.offset),
-            child: Transform.scale(
-              scale: 0.8 + 0.2 * (1 - aniFoldValue),
-              alignment: Alignment.bottomCenter,
-              child: findWidget(widget.firstBack, context, aniFoldValue, 2),
-            ),
+          child: Transform(
+            alignment: Alignment.bottomCenter,
+            transform: Matrix4.identity()
+              ..setEntry(3, 3, 1 / firstBackScale)
+              ..setEntry(1, 3, widget.offset),
+            child: findWidget(widget.firstBack, context, aniFoldValue, 2),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: widget.offset),
-          child: Transform.translate(
-            offset: Offset(0, 2 * widget.offset * (aniFoldValue - 1)),
-            child: Transform(
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateX(pi * 1 * aniFoldValue)
-                ..translate(.0, 0.0, _Z * (1 - easeInAniValue(aniFoldValue))),
-              alignment: Alignment.center,
-              child: Transform(
-                transform: Matrix4.identity()..rotateX(pi),
-                alignment: Alignment.center,
-                child: findWidget(widget.secondFront, context, aniFoldValue, 3),
-              ),
-            ),
+          child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001 * Curves.easeOutCirc.transform(2 * aniFoldValue - 1))
+              ..setEntry(1, 3, 2 * widget.offset * (aniFoldValue - 1))
+              ..rotateX(pi * 1 * aniFoldValue)
+              ..translate(.0, 0.0, _Z * (1 - easeInAniValue(aniFoldValue))),
+            alignment: Alignment.center,
+            child: findWidget(widget.secondFront, context, aniFoldValue, 3),
           ),
         ),
       ],

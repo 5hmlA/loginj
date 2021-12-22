@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "1.0.1"
   loginj:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       path: ".."
       relative: true
@@ -172,4 +172,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.15.0 <3.0.0"
-  flutter: ">=2.5.0"
+  flutter: ">=1.17.0"
