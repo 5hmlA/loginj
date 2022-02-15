@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginj/loginj.dart';
 
-import 'main.dart';
+import 'login.dart';
 
 const double padding = 24;
 
