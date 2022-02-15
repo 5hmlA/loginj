@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    timeDilation = 20;
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
