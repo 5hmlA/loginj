@@ -1,5 +1,7 @@
 # [![publish](https://github.com/ZuYun/loginj/actions/workflows/publish.yml/badge.svg)](https://github.com/ZuYun/loginj/actions/workflows/publish.yml)  [![https://pub.dev/packages/loginj](https://img.shields.io/badge/loginj-0.0.2-blue)](https://pub.dev/packages/loginj)  
 
+[Online experience](https://zuyun.github.io/loginj/#/)
+
 ### what is it
 
 ![flipover](https://raw.githubusercontent.com/ZuYun/loginj/main/preview/loginj.gif)
