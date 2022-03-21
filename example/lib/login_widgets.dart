@@ -140,80 +140,76 @@ Widget secondFrontCard(BuildContext context, double aniValue) {
     child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 20 * aniValue,
-      child: Transform(
-        transform: Matrix4.identity()..rotateX(pi),
-        alignment: Alignment.center,
-        child: SizedBox(
-          height: height,
-          child: Padding(
-            padding: const EdgeInsets.all(cardPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "SIGN UP",
-                  style: Theme.of(context).textTheme.headline5,
+      child: SizedBox(
+        height: height,
+        child: Padding(
+          padding: const EdgeInsets.all(cardPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "SIGN UP",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                maxLines: 1,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  border: OutlineInputBorder(),
+                  labelText: "user name",
+                  hintText: 'Enter User Name',
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                TextField(
-                  maxLines: 1,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                    border: OutlineInputBorder(),
-                    labelText: "user name",
-                    hintText: 'Enter User Name',
-                  ),
-                  onChanged: (input) {
-                    _userName = input;
-                    // _checkInput();
+                onChanged: (input) {
+                  _userName = input;
+                  // _checkInput();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              EditPassword(
+                labelText: "password",
+                hintText: 'Enter Password',
+                onChanged: (input) {
+                  _userName = input;
+                  // _checkInput();
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: ValueListenableBuilder(
+                  valueListenable: valueNotifier,
+                  builder: (BuildContext context, bool value, Widget? child) {
+                    return TextButton(
+                      onPressed: () {
+                        if (value) {
+                          // setState(() {
+                          //   _showLoading = true;
+                          // });
+                        }
+                      },
+                      child: AnimatedContainer(
+                        curve: value ? Curves.easeOutBack : Curves.easeInQuart,
+                        duration: const Duration(seconds: 1),
+                        child: Text("CONTINUE",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: value
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor)),
+                      ),
+                    );
                   },
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                EditPassword(
-                  labelText: "password",
-                  hintText: 'Enter Password',
-                  onChanged: (input) {
-                    _userName = input;
-                    // _checkInput();
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: ValueListenableBuilder(
-                    valueListenable: valueNotifier,
-                    builder: (BuildContext context, bool value, Widget? child) {
-                      return TextButton(
-                        onPressed: () {
-                          if (value) {
-                            // setState(() {
-                            //   _showLoading = true;
-                            // });
-                          }
-                        },
-                        child: AnimatedContainer(
-                          curve: value ? Curves.easeOutBack : Curves.easeInQuart,
-                          duration: const Duration(seconds: 1),
-                          child: Text("CONTINUE",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: value
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor)),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

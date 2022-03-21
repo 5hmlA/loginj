@@ -1,4 +1,3 @@
-import 'package:example/login_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
   findShowChild() {
     // return Loading();
     return const Padding(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(24),
       child: LoginCard(),
     );
   }

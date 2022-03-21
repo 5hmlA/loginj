@@ -44,7 +44,8 @@ class FlipOverj extends StatefulWidget {
   FlipOverjState createState() => FlipOverjState();
 }
 
-class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixin {
+class FlipOverjState extends State<FlipOverj>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationControl;
   final _Z = 60;
   bool _firstShow = true;
@@ -65,7 +66,8 @@ class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixi
   @override
   void initState() {
     super.initState();
-    _animationControl = AnimationController(vsync: this, duration: widget.duration);
+    _animationControl =
+        AnimationController(vsync: this, duration: widget.duration);
     _statusListener = (status) {
       if (status == AnimationStatus.completed) {
         onAnimateFirstComplete();
@@ -146,27 +148,35 @@ class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixi
   }
 
   double offsetNormal() {
-    return _showFrom * (1 - Curves.ease.transformInternal(_animationControl.value));
+    return _showFrom *
+        (1 - Curves.easeInOutBack.transformInternal(_animationControl.value));
   }
 
   double offsetSlow() {
     return 1.1 *
         _showFrom *
-        (2.22 * Curves.ease.transformInternal(1 - _animationControl.value).clamp(0, 1));
+        (2.22 *
+            (1 - Curves.easeOutBack.transformInternal(_animationControl.value)));
   }
 
   /// 后面的第二个 往前转 变为第一个  0 - 0.5
   Stack back2half(BuildContext context) {
     double aniFoldValue = easeOutAniValue(_animationControl.value);
-    var secondBackScale = (widget.secondScale + 2 * (1 - widget.secondScale) * aniFoldValue);
-    var firstFrontScale = (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
+    var secondBackScale =
+        (widget.secondScale + 2 * (1 - widget.secondScale) * aniFoldValue);
+    var firstFrontScale =
+        (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
     return Stack(
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: widget.offset),
           child: Transform(
             transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001 * Curves.easeOutCirc.transform(-2 * aniFoldValue + 1))
+              ..setEntry(
+                3,
+                2,
+                0.001 * Curves.easeOutCirc.transform(-2 * aniFoldValue + 1),
+              )
               ..setEntry(1, 3, -widget.offset * (aniFoldValue + .5))
               ..rotateX(pi * 1 * aniFoldValue)
               ..setEntry(3, 3, 1 / secondBackScale)
@@ -192,7 +202,8 @@ class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixi
   /// 0.5 - 1
   Stack half2front(BuildContext context) {
     double aniFoldValue = easeOutAniValue(_animationControl.value);
-    var firstBackScale = (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
+    var firstBackScale =
+        (widget.firstScale + (1 - widget.firstScale) * (1 - aniFoldValue));
     return Stack(
       children: [
         Padding(
@@ -209,7 +220,11 @@ class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixi
           padding: EdgeInsets.only(bottom: widget.offset),
           child: Transform(
             transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001 * Curves.easeOutCirc.transform(2 * aniFoldValue - 1))
+              ..setEntry(
+                3,
+                2,
+                0.001 * Curves.easeOutCirc.transform(2 * aniFoldValue - 1),
+              )
               ..setEntry(1, 3, 2 * widget.offset * (aniFoldValue - 1))
               ..rotateX(pi * 1 * aniFoldValue)
               ..translate(.0, 0.0, _Z * (1 - easeInAniValue(aniFoldValue))),
@@ -226,15 +241,29 @@ class FlipOverjState extends State<FlipOverj> with SingleTickerProviderStateMixi
   }
 
   double easeOutAniValue(double value) {
+    // return value;
     return Curves.easeOutQuad.transformInternal(value);
   }
 
-  Widget findWidget(AniBuilder builder, BuildContext context, double aniValue, int index) {
+  Widget findWidget(
+    AniBuilder builder,
+    BuildContext context,
+    double aniValue,
+    int index,
+  ) {
     Widget? temp = _cache[index];
     if (temp != null) {
       return temp;
     }
+    // 1:firstFront, 2:firstBack, 3:secFront, 4:secBack
     Widget buildWidget = builder(context, aniValue);
+    if (index == 3) {
+      buildWidget = Transform(
+        transform: Matrix4.identity()..rotateX(pi),
+        alignment: Alignment.center,
+        child: buildWidget,
+      );
+    }
     if (buildWidget is Stone) {
       _cache[index] = buildWidget;
     }

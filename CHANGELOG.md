@@ -5,3 +5,7 @@
 ## 0.0.2
 
 - optimization
+
+## 0.0.3
+
+- optimization
