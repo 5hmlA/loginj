@@ -9,3 +9,7 @@
 ## 0.0.3
 
 - optimization
+
+## 0.0.4
+
+- expose show ani duration

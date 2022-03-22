@@ -8,7 +8,7 @@
 https://user-images.githubusercontent.com/9412501/145047584-5acfbd4a-a448-4d85-8878-2dd779d32f30.mp4
 
 # how to use
-[![pub](https://img.shields.io/badge/pub-v0.0.3-green)](https://pub.dev/packages/loginj)
+[![pub](https://img.shields.io/badge/pub-v0.0.4-green)](https://pub.dev/packages/loginj)
 - pub
 ```yaml
   dependencies:

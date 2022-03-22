@@ -17,6 +17,7 @@ class FlipOverj extends StatefulWidget {
   final double secondScale;
   final double firstScale;
   final Duration duration;
+  final Duration showDuration;
 
   const FlipOverj({
     Key? key,
@@ -28,6 +29,7 @@ class FlipOverj extends StatefulWidget {
     this.secondScale = 0.85,
     this.firstScale = 0.8,
     this.duration = const Duration(milliseconds: 600),
+    this.showDuration = const Duration(milliseconds: 1666),
   }) : super(key: key);
 
   static FlipOverjState? of(BuildContext context) {
@@ -52,6 +54,7 @@ class FlipOverjState extends State<FlipOverj>
   AnimationStatusListener? _statusListener;
   final double _showFrom = 100;
 
+
   /// _firstFront, _firstBack,_secFront_secBack;
   final Map<int, Widget> _cache = {};
 
@@ -66,21 +69,23 @@ class FlipOverjState extends State<FlipOverj>
   @override
   void initState() {
     super.initState();
-    _animationControl =
-        AnimationController(vsync: this, duration: widget.duration);
+    _animationControl = AnimationController(
+      vsync: this,
+      duration: widget.showDuration,
+    );
     _statusListener = (status) {
       if (status == AnimationStatus.completed) {
-        onAnimateFirstComplete();
+        onAnimateShowComplete();
       }
     };
     _animationControl.addStatusListener(_statusListener!);
     _animationControl.forward();
   }
 
-  void onAnimateFirstComplete() {
+  void onAnimateShowComplete() {
     if (_firstShow) {
       _animationControl.reset();
-      // _animationControl.duration = widget.duration;
+      _animationControl.duration = widget.duration;
     }
     _animationControl.removeStatusListener(_statusListener!);
     setState(() {
@@ -156,7 +161,8 @@ class FlipOverjState extends State<FlipOverj>
     return 1.1 *
         _showFrom *
         (2.22 *
-            (1 - Curves.easeOutBack.transformInternal(_animationControl.value)));
+            (1 -
+                Curves.easeOutBack.transformInternal(_animationControl.value)));
   }
 
   /// 后面的第二个 往前转 变为第一个  0 - 0.5
@@ -270,3 +276,8 @@ class FlipOverjState extends State<FlipOverj>
     return buildWidget;
   }
 }
+
+// enum State{
+//   showfinish,
+//
+// }

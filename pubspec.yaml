@@ -1,6 +1,6 @@
 name: loginj
 description: a  library for login
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/ZuYun/loginj
 
 environment:
